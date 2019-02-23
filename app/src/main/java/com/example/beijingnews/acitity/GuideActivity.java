@@ -46,6 +46,21 @@ public class GuideActivity extends AppCompatActivity {
             imageView.setBackgroundResource(ids[i]);
             //添加到集合中
             imageViews.add(imageView);
+
+            //创建点,添加到线性布局里面
+            ImageView point = new ImageView(this);
+            point.setBackgroundResource(R.drawable.point_normal);
+            /**
+             * 单位是像素，需要做适配
+             */
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10,10);
+            if (i != 0){
+                //不包括第0个点，所有的点距离左边10个像素
+                params.leftMargin = 10;
+            }
+            point.setLayoutParams(params);
+            ll_point_group.addView(point);
+
         }
 
         //设置Viewpager的适配器
