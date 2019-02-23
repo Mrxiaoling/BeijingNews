@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.example.beijingnews.R;
 import com.example.beijingnews.SplashActivity;
 import com.example.beijingnews.utils.CahcheUtils;
+import com.example.beijingnews.utils.DensityUtil;
 
 import java.util.ArrayList;
 
@@ -33,6 +34,8 @@ public class GuideActivity extends AppCompatActivity {
     private ArrayList<ImageView> imageViews;
     //两点之间的间距
     private int leftmax;
+
+    private int widthdpi;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +52,7 @@ public class GuideActivity extends AppCompatActivity {
                 R.drawable.guide_2,
                 R.drawable.guide_3
         };
-
+        widthdpi = DensityUtil.dipTopx(this, 10);
         imageViews = new ArrayList<>();
         for (int i = 0 ; i < ids.length;i++){
             ImageView imageView = new ImageView(this);
@@ -63,11 +66,12 @@ public class GuideActivity extends AppCompatActivity {
             point.setBackgroundResource(R.drawable.point_normal);
             /**
              * 单位是像素，需要做适配
+             * 把单位当成dp转成对应的像素
              */
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(10,10);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(widthdpi,widthdpi);
             if (i != 0){
                 //不包括第0个点，所有的点距离左边10个像素
-                params.leftMargin = 10;
+                params.leftMargin = widthdpi;
             }
             point.setLayoutParams(params);
             ll_point_group.addView(point);
