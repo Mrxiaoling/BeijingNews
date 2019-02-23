@@ -11,6 +11,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
 
 import com.example.beijingnews.acitity.GuideActivity;
+import com.example.beijingnews.acitity.MainActivity;
 import com.example.beijingnews.utils.CahcheUtils;
 
 public class SplashActivity extends Activity {
@@ -55,6 +56,9 @@ public class SplashActivity extends Activity {
             //如果进入过，则直接进入主页面，否则进入引导界面
             boolean isStartMain = CahcheUtils.getBoolean(SplashActivity.this, START_MAIN);
             if (isStartMain){
+
+                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                startActivity(intent);
 
             }else {
                 Intent intent = new Intent(SplashActivity.this, GuideActivity.class);

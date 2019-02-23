@@ -1,5 +1,7 @@
 package com.example.beijingnews.acitity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -15,8 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.example.beijingnews.R;
+import com.example.beijingnews.SplashActivity;
+import com.example.beijingnews.utils.CahcheUtils;
 
 import java.util.ArrayList;
+
+import static com.example.beijingnews.SplashActivity.START_MAIN;
 
 public class GuideActivity extends AppCompatActivity {
 
@@ -75,6 +81,19 @@ public class GuideActivity extends AppCompatActivity {
         iv_red_point.getViewTreeObserver().addOnGlobalLayoutListener(new MyOnGlobalLayoutListener());
         //得到屏幕滑动的百分比
         viewpager.addOnPageChangeListener(new MyOnPageChangeListener());
+
+        btn_start_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //1、保存曾经进入过主页面
+                CahcheUtils.putBoolean(GuideActivity.this, SplashActivity.START_MAIN,true);
+                //2、跳转到主页面
+                Intent intent = new Intent(GuideActivity.this,MainActivity.class);
+                startActivity(intent);
+                //3、关闭引导页面
+                finish();
+            }
+        });
     }
 
     class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
@@ -104,6 +123,15 @@ public class GuideActivity extends AppCompatActivity {
          */
         @Override
         public void onPageSelected(int position) {
+
+            if (position == imageViews.size()-1){
+                //最后一个页面
+                btn_start_main.setVisibility(View.VISIBLE);
+
+            }else {
+                //其他页面
+                btn_start_main.setVisibility(View.GONE);
+            }
 
         }
 
