@@ -1,5 +1,6 @@
 package com.example.beijingnews.acitity;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -7,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.beijingnews.R;
 
@@ -22,6 +25,8 @@ public class GuideActivity extends AppCompatActivity {
     private LinearLayout ll_point_group;
     private ImageView iv_red_point;
     private ArrayList<ImageView> imageViews;
+    //两点之间的间距
+    private int leftmax;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +70,66 @@ public class GuideActivity extends AppCompatActivity {
 
         //设置Viewpager的适配器
         viewpager.setAdapter(new MyPagerAdapter());
+
+        //根据View的生命周期，当视图执行到onLayout或者onDraw的时候，视图的宽和高，边距都有了
+        iv_red_point.getViewTreeObserver().addOnGlobalLayoutListener(new MyOnGlobalLayoutListener());
+        //得到屏幕滑动的百分比
+        viewpager.addOnPageChangeListener(new MyOnPageChangeListener());
+    }
+
+    class MyOnPageChangeListener implements ViewPager.OnPageChangeListener{
+        /**
+         * 当页面滚动会回调该方法
+         * @param positon 当前滑动页面的位置
+         * @param positionOffset 页面滑动的百分比
+         * @param positionOffsetPixels 滑动的像素
+         */
+        @Override
+        public void onPageScrolled(int positon, float positionOffset, int positionOffsetPixels) {
+//            两点间移动的距离 = 屏幕滑动百分比 * 间距
+            int leftMargin = (int) (positionOffset*leftmax);
+//            两点间滑动距离对应的坐标 = 原来的起始位置 +  两点间移动的距离
+            leftMargin = positon*leftmax + (int) (positionOffset*leftmax);
+//
+//            params.leftMargin = 两点间滑动距离对应的坐标
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) iv_red_point.getLayoutParams();
+            params.leftMargin = leftMargin;
+            iv_red_point.setLayoutParams(params);
+
+        }
+
+        /**
+         * 当页面被选中的时候回调该方法
+         * @param position 被选中页面的位置
+         */
+        @Override
+        public void onPageSelected(int position) {
+
+        }
+
+        /**
+         * 当viewpager滑动状态发生变化的时候回调该方法
+         * @param state
+         */
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    }
+
+    class MyOnGlobalLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener{
+
+        @Override
+        public void onGlobalLayout() {
+            //执行不止一次
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                iv_red_point.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                // 间距  = 第1个点距离左边的距离 - 第0个点距离左边的距离
+                leftmax = ll_point_group.getChildAt(1).getLeft()-ll_point_group.getChildAt(0).getLeft();
+
+
+            }
+        }
     }
 
     class MyPagerAdapter extends PagerAdapter{
