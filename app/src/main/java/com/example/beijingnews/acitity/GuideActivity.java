@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+
 import com.example.beijingnews.R;
 import com.example.beijingnews.SplashActivity;
 import com.example.beijingnews.utils.CahcheUtils;
