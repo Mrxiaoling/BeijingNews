@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.example.beijingnews.R;
 import com.example.beijingnews.fragment.ContentFragment;
+import com.example.beijingnews.fragment.LeftMenuFragment;
 import com.example.beijingnews.utils.DensityUtil;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
@@ -45,7 +46,7 @@ public class MainActivity extends SlidingFragmentActivity {
         //2、开启事务
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         //3、替换
-        fragmentTransaction.replace(R.id.fl_leftmenu, new ContentFragment(),LEFTMENU_TAG);//左侧菜单
+        fragmentTransaction.replace(R.id.fl_leftmenu, new LeftMenuFragment(),LEFTMENU_TAG);//左侧菜单
         fragmentTransaction.replace(R.id.fl_main_content, new ContentFragment(),MAIN_CONTENT_TAG);//左侧菜单
         //4、提交
         fragmentTransaction.commit();

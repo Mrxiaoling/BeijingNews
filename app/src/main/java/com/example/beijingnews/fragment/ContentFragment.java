@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.RadioGroup;
 
 import com.example.beijingnews.R;
+import com.example.beijingnews.acitity.MainActivity;
 import com.example.beijingnews.base.BasePager;
 import com.example.beijingnews.pager.GovaffairPager;
 import com.example.beijingnews.pager.HomePager;
 import com.example.beijingnews.pager.NewsCenterPager;
 import com.example.beijingnews.pager.SettingPager;
 import com.example.beijingnews.pager.SmartServicePager;
+import com.example.beijingnews.view.NoScrollViewPager;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 
@@ -22,7 +25,7 @@ import java.util.ArrayList;
 public class ContentFragment extends BaseFragment {
     //五个页面的集合
     private ArrayList<BasePager> basePagers;
-    private ViewPager viewPager;
+    private NoScrollViewPager viewPager;
     private RadioGroup rg_main;
 
     @Override
@@ -43,12 +46,77 @@ public class ContentFragment extends BaseFragment {
         basePagers.add(new GovaffairPager(context));
         basePagers.add(new SmartServicePager(context));
         basePagers.add(new SettingPager(context));
-        //设置默认选中首页
-        rg_main.check(R.id.rb_home);
+
 
         //设置viewpager的适配器
         viewPager.setAdapter(new ContentFragmentAdapter());
+
+        //设置RadioGroup的选中状态的监听
+        rg_main.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
+
+
+        //监听某个页面被选中，初始化对应的页面的数据
+        viewPager.addOnPageChangeListener(new MyOnPagerChangeListener());
+        //设置默认选中首页
+        rg_main.check(R.id.rb_home);
+        basePagers.get(0).initData();
     }
+
+    class MyOnPagerChangeListener implements ViewPager.OnPageChangeListener{
+        public MyOnPagerChangeListener() {
+            super();
+        }
+
+        @Override
+        public void onPageScrolled(int i, float v, int i1) {
+
+        }
+
+        @Override
+        public void onPageSelected(int i) {
+            basePagers.get(i).initData();
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+
+        }
+    }
+
+    class MyOnCheckedChangeListener implements RadioGroup.OnCheckedChangeListener{
+
+        @Override
+        public void onCheckedChanged(RadioGroup group, int checkedId) {
+            switch (checkedId){
+                case R.id.rb_home:
+                    viewPager.setCurrentItem(0);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+                    break;
+                case R.id.rb_newscenter:
+                    viewPager.setCurrentItem(1);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+                    break;
+                case R.id.rb_smartservice:
+                    viewPager.setCurrentItem(2);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                    break;
+                case R.id.rb_govaffair:
+                    viewPager.setCurrentItem(3);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+                    break;
+                case R.id.rb_setting:
+                    viewPager.setCurrentItem(4);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+                    break;
+            }
+        }
+    }
+
+    private void isEnableSlidingMenu(int i) {
+        MainActivity mainActivity = (MainActivity) context;
+        mainActivity.getSlidingMenu().setTouchModeAbove(i);
+    }
+
     class ContentFragmentAdapter extends PagerAdapter{
 
         public ContentFragmentAdapter() {
