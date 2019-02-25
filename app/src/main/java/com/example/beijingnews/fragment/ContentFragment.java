@@ -94,11 +94,12 @@ public class ContentFragment extends BaseFragment {
                     break;
                 case R.id.rb_newscenter:
                     viewPager.setCurrentItem(1);
-                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
                     break;
                 case R.id.rb_smartservice:
                     viewPager.setCurrentItem(2);
-                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+                    isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
                     break;
                 case R.id.rb_govaffair:
                     viewPager.setCurrentItem(3);

@@ -1,6 +1,7 @@
 package com.example.beijingnews.pager;
 
 import android.content.Context;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.beijingnews.Constans;
@@ -28,6 +29,7 @@ public class NewsCenterPager extends BasePager {
     @Override
     public void initData() {
         super.initData();
+        ib_menu.setVisibility(View.VISIBLE);
         LogUtil.e("新闻中心被初始化了");
         tv_title.setText("新闻中心");
         //联网请求数据，创建视图
