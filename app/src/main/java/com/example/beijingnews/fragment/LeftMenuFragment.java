@@ -8,7 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.beijingnews.domain.NewsCenterPagerBeam;
+import com.example.beijingnews.utils.LogUtil;
+
+import java.util.List;
+
 public class LeftMenuFragment extends BaseFragment {
+
+    private List<NewsCenterPagerBeam.DataBean> data;
 
     @Override
     public View initView() {
@@ -18,5 +25,18 @@ public class LeftMenuFragment extends BaseFragment {
     @Override
     public void initData() {
         super.initData();
+    }
+
+    /**
+     * 接受数据
+     * @param data
+     */
+    public void setData(List<NewsCenterPagerBeam.DataBean> data) {
+        this.data=data;
+        for (int i = 0; i<data.size();i++){
+
+            LogUtil.e("title=="+data.get(i).getTitle());
+        }
+
     }
 }

@@ -52,4 +52,11 @@ public class MainActivity extends SlidingFragmentActivity {
         fragmentTransaction.commit();
 
     }
+    //得到左侧菜单Fragment
+    public LeftMenuFragment getLeftMenuFragment() {
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        LeftMenuFragment leftMenuFragment = (LeftMenuFragment) fragmentManager.findFragmentByTag(LEFTMENU_TAG);
+        return leftMenuFragment;
+    }
 }
