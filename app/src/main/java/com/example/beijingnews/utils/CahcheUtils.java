@@ -30,4 +30,25 @@ public class CahcheUtils {
         sp.edit().putBoolean(key, value).commit();
 
     }
+
+    /**
+     * 缓存文本数据
+     * @param context
+     * @param key
+     * @param value
+     */
+    public static void putString(Context context, String key, String value) {
+        SharedPreferences sp = context.getSharedPreferences("ling", Context.MODE_PRIVATE);
+        sp.edit().putString(key ,value ).commit();
+
+    }
+
+    public static String getString(Context context, String key) {
+
+        SharedPreferences sp = context.getSharedPreferences("ling", Context.MODE_PRIVATE);
+
+//        String text = null;//空指针，应采用下面的方式
+//        text.equals('ddd');
+        return sp.getString(key, "");
+    }
 }

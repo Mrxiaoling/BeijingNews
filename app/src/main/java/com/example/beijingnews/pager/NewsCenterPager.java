@@ -1,14 +1,21 @@
 package com.example.beijingnews.pager;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.beijingnews.Constans;
 import com.example.beijingnews.acitity.MainActivity;
 import com.example.beijingnews.base.BasePager;
+import com.example.beijingnews.base.MenuDetailBasePager;
 import com.example.beijingnews.domain.NewsCenterPagerBeam;
 import com.example.beijingnews.fragment.LeftMenuFragment;
+import com.example.beijingnews.menudetailpager.InteracMenuDetailPager;
+import com.example.beijingnews.menudetailpager.NewsMenuDetailPager;
+import com.example.beijingnews.menudetailpager.PhotoMenuDetailPager;
+import com.example.beijingnews.menudetailpager.TopicMenuDetailPager;
+import com.example.beijingnews.utils.CahcheUtils;
 import com.example.beijingnews.utils.LogUtil;
 import com.google.gson.Gson;
 
@@ -16,11 +23,13 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsCenterPager extends BasePager {
 
     List<NewsCenterPagerBeam.DataBean> data;//左侧菜单对应的数据集合
+    private ArrayList<MenuDetailBasePager> menuDetailBasePagers;//详情页面的集合
 
     public NewsCenterPager(Context context) {
         super(context);
@@ -38,7 +47,14 @@ public class NewsCenterPager extends BasePager {
         //把子视图添加到BasePager的FrameLayout中
         fl_content.addView(textView);
         //绑定数据
-
+        //获取缓存数据
+        String saveJson = CahcheUtils.getString(context,Constans.NEWSCENTER_PAGER_URL);
+//        if (saveJson!=null){
+//            //.....还可能是空字符串，应用下面的
+//        }
+        if (!TextUtils.isEmpty(saveJson)){
+            processData(saveJson);
+        }
         //联网请求数据
         getDaraFromNet();
     }
@@ -50,6 +66,8 @@ public class NewsCenterPager extends BasePager {
             @Override
             public void onSuccess(String result) {
                 LogUtil.e("联网请求成功"+result);
+                //缓存数据
+                CahcheUtils.putString(context,Constans.NEWSCENTER_PAGER_URL,result);
                 processData(result);
             }
 
@@ -86,8 +104,15 @@ public class NewsCenterPager extends BasePager {
         MainActivity mainActivity = (MainActivity) context;
         //得到左侧菜单
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();
+        //添加详情页面
+        menuDetailBasePagers= new ArrayList<>();
+        menuDetailBasePagers.add(new NewsMenuDetailPager(context));
+        menuDetailBasePagers.add(new TopicMenuDetailPager(context));
+        menuDetailBasePagers.add(new PhotoMenuDetailPager(context));
+        menuDetailBasePagers.add(new InteracMenuDetailPager(context));
         //把数据传递给左侧菜单
         leftMenuFragment.setData(data);
+
     }
 
     /**
@@ -100,5 +125,30 @@ public class NewsCenterPager extends BasePager {
         NewsCenterPagerBeam beam = gson.fromJson(json, NewsCenterPagerBeam.class);
 
         return beam;
+    }
+
+    /**
+     * 根据位置切换详情页面
+     * @param position
+     */
+    public void swichPager(int position) {
+
+//        MainActivity mainActivity = (MainActivity) context;
+//        ContentFragment contentFragment = mainActivity.getContentFragment();
+//        NewsCenterPager newsCenterPager = contentFragment.getNewsCenterPager();
+//        newsCenterPager.swichPager(position);
+
+        //1.设置标题
+        tv_title.setText(data.get(position).getTitle());
+        //2.移除之前内容
+        fl_content.removeAllViews();//移除之前的视图
+
+        //3.添加新内容
+        MenuDetailBasePager detaiBasePager = menuDetailBasePagers.get(position);//
+        View rootView = detaiBasePager.rootView;
+        detaiBasePager.initData();//初始化数据
+
+
+        fl_content.addView(rootView);
     }
 }

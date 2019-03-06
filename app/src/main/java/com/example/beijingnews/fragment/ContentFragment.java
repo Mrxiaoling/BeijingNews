@@ -62,6 +62,15 @@ public class ContentFragment extends BaseFragment {
         basePagers.get(0).initData();
     }
 
+    /**
+     * 得到新闻中心
+     * @return
+     */
+    public NewsCenterPager getNewsCenterPager() {
+
+        return (NewsCenterPager) basePagers.get(1);
+    }
+
     class MyOnPagerChangeListener implements ViewPager.OnPageChangeListener{
         public MyOnPagerChangeListener() {
             super();
@@ -74,6 +83,7 @@ public class ContentFragment extends BaseFragment {
 
         @Override
         public void onPageSelected(int i) {
+
             basePagers.get(i).initData();
         }
 

@@ -60,17 +60,18 @@ public class LeftMenuFragment extends BaseFragment {
 
         return listView;
     }
+
     /**
      * 根据位置切换不同详情页面
      * @param position
      */
     private void swichPager(int position) {
-
-//        MainActivity mainActivity = (MainActivity) context;
-//        ContentFragment contentFragment = mainActivity.getContentFragment();
-//        NewsCenterPager newsCenterPager = contentFragment.getNewsCenterPager();
-//        newsCenterPager.swichPager(position);
+        MainActivity mainActivity = (MainActivity) context;
+        ContentFragment contentFragment = mainActivity.getContentFragment();
+        NewsCenterPager newsCenterPager = contentFragment.getNewsCenterPager();
+        newsCenterPager.swichPager(position);
     }
+
 
     @Override
     public void initData() {
@@ -119,6 +120,7 @@ public class LeftMenuFragment extends BaseFragment {
         }
         @Override
         public Object getItem(int position) {
+
             return null;
         }
 
