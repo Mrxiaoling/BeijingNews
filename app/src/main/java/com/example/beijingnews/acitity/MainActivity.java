@@ -21,6 +21,7 @@ public class MainActivity extends SlidingFragmentActivity {
     public  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //上一行不注释掉不能 显示TextView
 
         //设置左侧菜单
         setBehindContentView(R.layout.activity_leftmenu);

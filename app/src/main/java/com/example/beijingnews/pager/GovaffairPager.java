@@ -19,9 +19,10 @@ public class GovaffairPager extends BasePager {
         tv_title.setText("政要");
         //联网请求数据，创建视图
         TextView textView = new TextView(context);
+        fl_content.addView(textView);
         textView.setText("政要");
         //把子视图添加到BasePager的FrameLayout中
-        fl_content.addView(textView);
+
         //绑定数据
     }
 }

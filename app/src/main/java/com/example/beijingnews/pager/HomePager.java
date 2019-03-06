@@ -20,9 +20,10 @@ public class HomePager extends BasePager {
         tv_title.setText("主页面");
         //联网请求数据，创建视图
         TextView textView = new TextView(context);
+        fl_content.addView(textView);
         textView.setText("主页面");
         //把子视图添加到BasePager的FrameLayout中
-        fl_content.addView(textView);
+
         //绑定数据
     }
 }

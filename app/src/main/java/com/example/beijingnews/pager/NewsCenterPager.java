@@ -1,7 +1,9 @@
 package com.example.beijingnews.pager;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,9 +45,12 @@ public class NewsCenterPager extends BasePager {
         tv_title.setText("新闻中心");
         //联网请求数据，创建视图
         TextView textView = new TextView(context);
-        textView.setText("新闻");
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextColor(Color.RED);
         //把子视图添加到BasePager的FrameLayout中
         fl_content.addView(textView);
+        textView.setText("新闻");
+
         //绑定数据
         //获取缓存数据
         String saveJson = CahcheUtils.getString(context,Constans.NEWSCENTER_PAGER_URL);
@@ -106,7 +111,7 @@ public class NewsCenterPager extends BasePager {
         LeftMenuFragment leftMenuFragment = mainActivity.getLeftMenuFragment();
         //添加详情页面
         menuDetailBasePagers= new ArrayList<>();
-        menuDetailBasePagers.add(new NewsMenuDetailPager(context));
+        menuDetailBasePagers.add(new NewsMenuDetailPager(context,data.get(0)));
         menuDetailBasePagers.add(new TopicMenuDetailPager(context));
         menuDetailBasePagers.add(new PhotoMenuDetailPager(context));
         menuDetailBasePagers.add(new InteracMenuDetailPager(context));
