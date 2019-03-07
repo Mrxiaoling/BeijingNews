@@ -11,10 +11,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.beijingnews.R;
+import com.example.beijingnews.acitity.MainActivity;
 import com.example.beijingnews.base.MenuDetailBasePager;
 import com.example.beijingnews.domain.NewsCenterPagerBeam;
 import com.example.beijingnews.menudetailpager.tabdetailpager.TabDetailPager;
 import com.example.beijingnews.utils.LogUtil;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.viewpagerindicator.TabPageIndicator;
 
 import org.xutils.view.annotation.ViewInject;
@@ -53,6 +55,11 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
 
     }
 
+    private void isEnableSlidingMenu(int i) {
+        MainActivity mainActivity = (MainActivity) context;
+        mainActivity.getSlidingMenu().setTouchModeAbove(i);
+    }
+
     @Override
     public View initView() {
 //        textView = new TextView(context);
@@ -87,7 +94,32 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
         //viewpager和tabpagerindicator关联
         tabPagerIndicator.setViewPager(viewpager);
         //主页以后监听页面的辩护，TabPagerIndicator监听页面
+        tabPagerIndicator.setOnPageChangeListener(new MyOnPagerChangeListener());
 
+    }
+
+    class MyOnPagerChangeListener implements ViewPager.OnPageChangeListener{
+
+        @Override
+        public void onPageScrolled(int i, float v, int i1) {
+
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            if (position==0){
+                //slidingmenu可以全屏滑动
+                isEnableSlidingMenu(SlidingMenu.TOUCHMODE_FULLSCREEN);
+            }else {
+                //不可以全屏滑动
+                isEnableSlidingMenu(SlidingMenu.TOUCHMODE_NONE);
+            }
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int i) {
+
+        }
     }
 
     class MyNewsMenuDetailPagerAdapter extends PagerAdapter{
