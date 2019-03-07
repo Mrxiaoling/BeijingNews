@@ -2,10 +2,12 @@ package com.example.beijingnews.menudetailpager;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.beijingnews.R;
@@ -13,6 +15,7 @@ import com.example.beijingnews.base.MenuDetailBasePager;
 import com.example.beijingnews.domain.NewsCenterPagerBeam;
 import com.example.beijingnews.menudetailpager.tabdetailpager.TabDetailPager;
 import com.example.beijingnews.utils.LogUtil;
+import com.viewpagerindicator.TabPageIndicator;
 
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
@@ -21,6 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsMenuDetailPager extends MenuDetailBasePager {
+
+    @ViewInject(R.id.ib_tab_next)
+    private ImageButton ib_tab_next;
+    @ViewInject(R.id.tabPagerIndicator)
+    private TabPageIndicator tabPagerIndicator;
 
 //    public TextView textView;
     @ViewInject(R.id.news_viewpager)
@@ -52,6 +60,13 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
 
         View view = View.inflate(context, R.layout.newsmenu_detail_pager  ,null );
         x.view().inject(NewsMenuDetailPager.this,view);
+        //设置点击事件
+        ib_tab_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewpager.setCurrentItem(viewpager.getCurrentItem()+1);
+            }
+        });
         return view;
     }
 
@@ -69,9 +84,20 @@ public class NewsMenuDetailPager extends MenuDetailBasePager {
 
         viewpager.setAdapter(new MyNewsMenuDetailPagerAdapter());
 
+        //viewpager和tabpagerindicator关联
+        tabPagerIndicator.setViewPager(viewpager);
+        //主页以后监听页面的辩护，TabPagerIndicator监听页面
+
     }
 
     class MyNewsMenuDetailPagerAdapter extends PagerAdapter{
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return childrenData.get(position).getTitle();
+
+        }
 
         @Override
         public int getCount() {
